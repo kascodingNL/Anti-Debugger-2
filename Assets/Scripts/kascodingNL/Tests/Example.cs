@@ -8,7 +8,7 @@ class Example : Checks
         
     }
 
-    public override void DebuggerFound(DateTime timeStamp)
+    public override void DebuggerFound(DateTime timeStamp, int methodId)
     {
         
     }
