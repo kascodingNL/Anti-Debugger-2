@@ -13,6 +13,11 @@ using Debug = UnityEngine.Debug;
 
 public abstract class Checks : MonoBehaviour
 {
+    public Checks(int toScene = -1)
+    {
+        ToSceneId = toScene;
+    }
+
     #region Low level imports
     [DllImport("kernel32.dll", SetLastError = true, ExactSpelling = true)]
     private static extern bool CheckRemoteDebuggerPresent(IntPtr hProcess, ref bool isDebuggerPresent);
@@ -41,6 +46,8 @@ public abstract class Checks : MonoBehaviour
     int realTime = 0;
     float gameTime = 0;
     bool detected = false;
+
+    public int ToSceneId;
 
     bool CheckDebugger;
 
@@ -134,6 +141,18 @@ public abstract class Checks : MonoBehaviour
         if (CheckDebugger)
         {
             RequestDebugCheck();
+        }
+
+        if(Dflag && ToSceneId != -1)
+        {
+            if(SceneManager.GetSceneByBuildIndex(ToSceneId) != null)
+            {
+                SceneManager.LoadSceneAsync(ToSceneId);
+            }
+            else
+            {
+                throw new Exception("[Anti-Debugger] The ToSceneId integer refers to " + ToSceneId + " but the scene does not exist!");
+            }
         }
     }
     #endregion
