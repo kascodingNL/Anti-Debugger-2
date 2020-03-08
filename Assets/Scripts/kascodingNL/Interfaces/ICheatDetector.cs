@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
+[ObsoleteAttribute]
 public abstract class ICheatDetector : MonoBehaviour
 {
     public abstract void ClockDesync(int TimeDiff);
