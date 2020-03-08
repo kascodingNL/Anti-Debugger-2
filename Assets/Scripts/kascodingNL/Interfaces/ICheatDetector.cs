@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public abstract class ICheatDetector : MonoBehaviour

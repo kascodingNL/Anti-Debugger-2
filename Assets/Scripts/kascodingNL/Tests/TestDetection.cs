@@ -12,6 +12,9 @@ class TestDetection : Checks
     private void Awake()
     {
         Debug.Log("See? You can just use all things!");
+
+        //You can even request a debugging check!
+        RequestDebuggerCheck();
     }
 
     public override void ClockDesync(int TimeDiff)
@@ -22,5 +25,10 @@ class TestDetection : Checks
     public override void InterUpdate(int TimeDiff)
     {
         Debug.Log("InterUpdate " + TimeDiff);
+    }
+
+    public override void DebuggerFound(DateTime timeStamp, int methodId)
+    {
+        Debug.Log(string.Format("TimeStamp: {0}, methodId: {1}", timeStamp, methodId));
     }
 }

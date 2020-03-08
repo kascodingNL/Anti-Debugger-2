@@ -133,46 +133,57 @@ public abstract class Checks : MonoBehaviour
     {
         if (CheckDebugger)
         {
-            #region Debugger detections
-            #region Method 1
-            NtSetInformationThread(GetCurrentThread(), 0x11, IntPtr.Zero, 0);
-            #endregion
-
-            #region Method 2
-            bool isDebuggerPresent = false;
-            CheckRemoteDebuggerPresent(Process.GetCurrentProcess().Handle, ref isDebuggerPresent);
-
-            if (isDebuggerPresent || IsDebuggerPresent())
-            {
-                Dflag = true;
-            }
-            #endregion
-
-            #region Method 3
-            if (System.Diagnostics.Debugger.IsAttached)
-            {
-                Dflag = true;
-            }
-            #endregion
-
-            #region Method 4
-            status = NtQueryInformationProcess(Process.GetCurrentProcess().Handle, 0x1f, NoDebugInherit, 4, IntPtr.Zero);
-            if (((uint)Marshal.PtrToStructure(NoDebugInherit, typeof(uint))) == 0)
-            {
-                Dflag = true;
-            }
-
-            status2 = NtQueryInformationProcess(Process.GetCurrentProcess().Handle, 0x1e, hDebugObject, 4, IntPtr.Zero);
-            if (status2 == 0)
-                Dflag = true;
-
-            #endregion
-            #endregion
+            RequestDebugCheck();
         }
     }
     #endregion
 
     #region In-house function
+    void RequestDebugCheck()
+    {
+        #region Debugger detections
+        #region Method 1
+        NtSetInformationThread(GetCurrentThread(), 0x11, IntPtr.Zero, 0);
+        #endregion
+
+        #region Method 2
+        bool isDebuggerPresent = false;
+        CheckRemoteDebuggerPresent(Process.GetCurrentProcess().Handle, ref isDebuggerPresent);
+
+        if (isDebuggerPresent || IsDebuggerPresent())
+        {
+            DebuggerFound(DateTime.UtcNow, 0);
+            Dflag = true;
+        }
+        #endregion
+
+        #region Method 3
+        if (System.Diagnostics.Debugger.IsAttached)
+        {
+            Dflag = true;
+            DebuggerFound(DateTime.UtcNow, 1);
+        }
+        #endregion
+
+        #region Method 4
+        status = NtQueryInformationProcess(Process.GetCurrentProcess().Handle, 0x1f, NoDebugInherit, 4, IntPtr.Zero);
+        if (((uint)Marshal.PtrToStructure(NoDebugInherit, typeof(uint))) == 0)
+        {
+            Dflag = true;
+            DebuggerFound(DateTime.UtcNow, 2);
+        }
+
+        status2 = NtQueryInformationProcess(Process.GetCurrentProcess().Handle, 0x1e, hDebugObject, 4, IntPtr.Zero);
+        if (status2 == 0)
+        {
+            DebuggerFound(DateTime.UtcNow, 3);
+            Dflag = true;
+        }
+
+        #endregion
+        #endregion
+    }
+
     void SpeedupDetected(int TimeDifference)
     {
         float penaltyToAdd = Time.timeScale == 1f ? TimeDifference * .5f : 0f;
@@ -209,9 +220,18 @@ public abstract class Checks : MonoBehaviour
             Debug.LogError(e.Message);
         }
     }
+    #endregion
 
+    #region Requesting checks.
+    public void RequestDebuggerCheck()
+    {
+        RequestDebugCheck();
+    }
+    #endregion
+
+    #region Abstracts
     public abstract void ClockDesync(int TimeDiff);
-
     public abstract void InterUpdate(int TimeDiff);
+    public abstract void DebuggerFound(DateTime timeStamp, int methodId);
     #endregion
 }
