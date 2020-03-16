@@ -18,6 +18,11 @@ public abstract class Checks : MonoBehaviour
         ToSceneId = toScene;
     }
 
+    public Checks(SocketClient socket, int toScene = -1)
+    {
+        this.client = socket;
+    }
+
     #region Low level imports
     [DllImport("kernel32.dll", SetLastError = true, ExactSpelling = true)]
     private static extern bool CheckRemoteDebuggerPresent(IntPtr hProcess, ref bool isDebuggerPresent);
@@ -32,6 +37,8 @@ public abstract class Checks : MonoBehaviour
     #endregion
 
     #region Variables
+    private SocketClient client;
+
     private bool Dflag;
     private IntPtr NoDebugInherit = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(UInt32)));
     private long status;
