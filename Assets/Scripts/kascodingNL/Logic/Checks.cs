@@ -1,9 +1,6 @@
-﻿
-using Assets.Scripts.kascodingNL;
+﻿using Assets.Scripts.kascodingNL;
 using Assets.Scripts.kascodingNL.Logic.Utils;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -90,16 +87,18 @@ public abstract class Checks : MonoBehaviour
     void Start()
     {
         #region Set variables
+        if (socketClient != null && shoulduseSocket)
+        {
+            socketClient = networkObject.GetComponent<SocketClient>();
+            socketClient.neededSender = sender;
 
-        socketClient = networkObject.GetComponent<SocketClient>();
-        socketClient.neededSender = sender;
+            Cryptography crypt = new Cryptography();
 
-        Cryptography crypt = new Cryptography();
-
-        Tuple<string, string> keypair = crypt.CreateKeyPair();
-        string key = keypair.Item1;
-        sender = new ISender(crypt.Encrypt(SocketMD5Hash, key));
-        Debug.Log("RSA Auth Key: " + key);
+            Tuple<string, string> keypair = crypt.CreateKeyPair();
+            string key = keypair.Item1;
+            sender = new ISender(crypt.Encrypt(SocketMD5Hash, key));
+            Debug.Log("RSA Auth Key: " + key);
+        }
 
         Dflag = false;
         filePath = Application.persistentDataPath + "/logs/latest.log";
