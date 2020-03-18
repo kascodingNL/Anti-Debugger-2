@@ -170,6 +170,10 @@ MonoBehaviour:
   SpeedPenalty: 0
   MaxSpeedPenalty: 0
   socketClient: {fileID: 0}
+  lastMouseX: 0
+  lastMouseY: 0
+  mouseX: 0
+  mouseY: 0
   ToSceneId_: 0
 --- !u!1 &998729901
 GameObject:
@@ -274,6 +278,7 @@ GameObject:
   - component: {fileID: 1005679455}
   - component: {fileID: 1005679454}
   - component: {fileID: 1005679453}
+  - component: {fileID: 1005679457}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -354,6 +359,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: -42.91, y: 47.87, z: 0}
+--- !u!114 &1005679457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1005679452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dac51329a2477a940b91a7239f6ff81b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnPos: {x: 0, y: 0, z: 0}
+  spawnRotation: {x: 0, y: 0, z: 0, w: 0}
+  start: {fileID: 1005679456}
 --- !u!1 &1508241601
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 class Example : Checks
 {
@@ -15,5 +16,10 @@ class Example : Checks
     public override void InterUpdate(int TimeDiff)
     {
         
+    }
+
+    public override void SmoothAim(Vector2 delta)
+    {
+        //throw new NotImplementedException();
     }
 }

@@ -154,6 +154,8 @@ public abstract class Checks : MonoBehaviour
 
     void Update()
     {
+        UpdateMouse(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"));
+
         if (!flagged && Dflag)
         {
             flagged = true;
@@ -169,9 +171,12 @@ public abstract class Checks : MonoBehaviour
         }
     }
 
+    private float checkDelay;
+
     private void LateUpdate()
     {
-        if (CheckDebugger)
+        checkDelay += Time.deltaTime;
+        if (CheckDebugger && checkDelay >= 1f)
         {
             RequestDebugCheck();
         }
@@ -259,13 +264,49 @@ public abstract class Checks : MonoBehaviour
         }
     }
 
+    public float lastMouseX;
+    public float lastMouseY;
+
+    public float mouseX;
+    public float mouseY;
+
+    #region Verbose values
+
+    private Verbose smoothVerbose = new Verbose(50);
+
+    #endregion
+
+    public void UpdateMouse(float x, float y)
+    {
+        lastMouseX = mouseX;
+        lastMouseY = mouseY;
+
+        mouseX += x;
+        mouseY += y;
+
+        float limit = .03f;
+        float minusLimit = -.03f;
+
+        Vector2 delta = new Vector2(mouseX, mouseY) - new Vector2(lastMouseX, lastMouseY);
+
+        if((delta.x >= minusLimit && delta.x <= limit || delta.y >= minusLimit && delta.y <= limit) 
+            && delta.x != 0 && delta.y != 0 && smoothVerbose.flag(1))
+        {
+            SmoothAim(delta);
+        }
+
+        //Debug.Log(smoothVerbose.getVerbose());
+        //Debug.Log(delta);
+    }
+
+
     void WriteToFileAndDebug(string message, bool writeToDebug)
     {
         try
         {
-            StreamWriter fileWriter = new StreamWriter(filePath, true);
+            /*StreamWriter fileWriter = new StreamWriter(filePath, true);
             fileWriter.WriteLine(message);
-            fileWriter.Close();
+            fileWriter.Close();*/
             if (writeToDebug)
             {
                 Debug.Log(message);
@@ -289,5 +330,6 @@ public abstract class Checks : MonoBehaviour
     public abstract void ClockDesync(int TimeDiff);
     public abstract void InterUpdate(int TimeDiff);
     public abstract void DebuggerFound(DateTime timeStamp, int methodId);
+    public abstract void SmoothAim(Vector2 delta);
     #endregion
 }
