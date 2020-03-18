@@ -1,4 +1,6 @@
 ﻿
+using Assets.Scripts.kascodingNL;
+using Assets.Scripts.kascodingNL.Logic.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,6 +23,7 @@ public abstract class Checks : MonoBehaviour
     public Checks(SocketClient socket, int toScene = -1)
     {
         this.client = socket;
+        shoulduseSocket = (socket != null);
     }
 
     #region Low level imports
@@ -37,7 +40,17 @@ public abstract class Checks : MonoBehaviour
     #endregion
 
     #region Variables
+
+    public GameObject networkObject;
+
+    //public MD5 hash
+    public string SocketMD5Hash;
+
+    //CommandExecutor Authorication
+    ISender sender;
+
     private SocketClient client;
+    private bool shoulduseSocket = false;
 
     private bool Dflag;
     private IntPtr NoDebugInherit = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(UInt32)));
@@ -62,6 +75,9 @@ public abstract class Checks : MonoBehaviour
     public float MaxSpeedPenalty = 20;
 
     private float SecondDelay;
+
+    public SocketClient socketClient;
+
     #endregion
 
     #region Unity built in methods
@@ -74,13 +90,24 @@ public abstract class Checks : MonoBehaviour
     void Start()
     {
         #region Set variables
+
+        socketClient = networkObject.GetComponent<SocketClient>();
+        socketClient.neededSender = sender;
+
+        Cryptography crypt = new Cryptography();
+
+        Tuple<string, string> keypair = crypt.CreateKeyPair();
+        string key = keypair.Item1;
+        sender = new ISender(crypt.Encrypt(SocketMD5Hash, key));
+        Debug.Log("RSA Auth Key: " + key);
+
         Dflag = false;
         filePath = Application.persistentDataPath + "/logs/latest.log";
 
         previousTime = DateTime.Now.Second;
         gameTime = 1;
 
-        Debug.Log(CreateMd5("Test"));
+        //Debug.Log(CreateMd5("Test"));
 
         #region CheckDebugger setter
 #if UNITY_EDITOR
@@ -180,6 +207,10 @@ public abstract class Checks : MonoBehaviour
         {
             DebuggerFound(DateTime.UtcNow, 0);
             Dflag = true;
+            if(shoulduseSocket)
+            {
+                client.SendData("FlagDebug", true);
+            }
         }
         #endregion
 

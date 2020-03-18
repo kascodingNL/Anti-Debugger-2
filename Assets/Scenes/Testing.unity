@@ -163,10 +163,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ab6cb8d0bb87c14fa09c20459e8b3a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  networkObject: {fileID: 1524064264}
+  SocketMD5Hash: DLq39CcZ!#
   timeDiff: 0
   ToSceneId: 0
   SpeedPenalty: 0
   MaxSpeedPenalty: 0
+  socketClient: {fileID: 0}
   ToSceneId_: 0
 --- !u!1 &998729901
 GameObject:

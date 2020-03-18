@@ -11,3 +11,8 @@ ws.on('connection', function connection(ws) {
 
   ws.send(126124);
 });
+
+ws.on('close', function disconnect(reasonCode, description)
+{
+	console.log('Disconnect');
+});

@@ -1,16 +1,20 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.kascodingNL;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using WebSocketSharp;
 
 public class SocketClient : MonoBehaviour
 {
-    public string websocketIP = "ws://127.0.0.1";
+    public string websocketIP = "ws://127.0.0.1:8180";
     public int websocketPort = 8180;
 
     public WebSocket ws;
+    public ISender neededSender;
 
     // Start is called before the first frame update
     void Start()
@@ -28,10 +32,12 @@ public class SocketClient : MonoBehaviour
         };
 
         ws.Connect();
+        string externalip = new WebClient().DownloadString("http://icanhazip.com");
+        //Debug.Log(externalip);
 
-        var sending = 102.1481412f;
+        var sending = "Sending handshake from " + externalip;
 
-        ws.Send(ObjectToByteArray(sending.ToString()));
+        ws.Send(ObjectToByteArray(sending));
     }
 
     // Update is called once per frame
@@ -39,8 +45,29 @@ public class SocketClient : MonoBehaviour
     {
         
     }
+    #region Send methods
+    public void SendData(String type, int sending)
+    {
+        ws.Send(ObjectToByteArray(type + " " + sending.ToString()));
+    }
 
-    byte[] ObjectToByteArray(object obj)
+    public void SendData(String type, string sending)
+    {
+        ws.Send(ObjectToByteArray(type + " " + sending.ToString()));
+    }
+
+    public void SendData(String type, float sending)
+    {
+        ws.Send(ObjectToByteArray(type + " " + sending.ToString()));
+    }
+
+    public void SendData(String type, bool sending)
+    {
+        ws.Send(ObjectToByteArray(type + " " + sending.ToString()));
+    }
+    #endregion
+
+    private byte[] ObjectToByteArray(object obj)
     {
         if (obj == null)
             return null;
@@ -49,6 +76,19 @@ public class SocketClient : MonoBehaviour
         {
             bf.Serialize(ms, obj);
             return ms.ToArray();
+        }
+    }
+
+    public void OnApplicationQuit()
+    {
+        ws.Close();
+    }
+
+    public void Disconnect(ISender sender)
+    {
+        if(sender.senderHash == neededSender.senderHash)
+        {
+            ws.Close();
         }
     }
 }
