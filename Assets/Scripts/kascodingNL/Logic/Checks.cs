@@ -281,8 +281,13 @@ public abstract class Checks : MonoBehaviour
 
         Vector2 delta = new Vector2(mouseX, mouseY) - new Vector2(lastMouseX, lastMouseY);
 
-        if((delta.x >= minusLimit && delta.x <= limit || delta.y >= minusLimit && delta.y <= limit) 
-            && delta.x != 0 && delta.y != 0 && smoothVerbose.flag(1))
+        bool deltaXWithinLimits = delta.x >= minusLimit && delta.x <= limit;
+        bool deltaYWithinLimits = delta.y >= minusLimit && delta.y <= limit;
+
+        bool deltaXNotNull = delta.x != 0;
+        bool deltaYNotNull = delta.y != 0;
+
+        if ((!deltaXWithinLimits || !deltaYWithinLimits) && deltaXNotNull && deltaYNotNull && smoothVerbose.flag(1))
         {
             SmoothAim(delta);
         }
@@ -301,7 +306,7 @@ public abstract class Checks : MonoBehaviour
         }
         catch (IOException e)
         {
-            Debug.LogError(e.Message);
+            throw e;
         }
     }
     #endregion
