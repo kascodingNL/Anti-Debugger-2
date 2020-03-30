@@ -40,11 +40,10 @@ public abstract class Checks : MonoBehaviour
 
     public GameObject networkObject;
 
-    //public MD5 hash
-    public string SocketMD5Hash;
+    public string SocketMD5Hash = string.Empty;
 
     //CommandExecutor Authorication
-    ISender sender;
+    private ISender sender;
 
     private SocketClient client;
     private bool shoulduseSocket = false;
@@ -55,21 +54,21 @@ public abstract class Checks : MonoBehaviour
     private long status2;
     private IntPtr hDebugObject = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(IntPtr)));
 
-    private string filePath;
+    private string filePath = string.Empty;
     private bool flagged;
 
     public int timeDiff = 0;
-    int previousTime = 0;
-    int realTime = 0;
-    float gameTime = 0;
-    bool detected = false;
+    private int previousTime = 0;
+    private int realTime = 0;
+    private float gameTime = 0f;
+    private bool detected = false;
 
     public int ToSceneId;
 
-    bool CheckDebugger;
+    private bool CheckDebugger;
 
-    public float SpeedPenalty = 0;
-    public float MaxSpeedPenalty = 20;
+    public float SpeedPenalty = 0f;
+    public float MaxSpeedPenalty = 20f;
 
     private float SecondDelay;
 
@@ -79,11 +78,6 @@ public abstract class Checks : MonoBehaviour
 
     #region Unity built in methods
 
-    void Awake()
-    {
-        
-    }
-
     void Start()
     {
         #region Set variables
@@ -92,7 +86,7 @@ public abstract class Checks : MonoBehaviour
             socketClient = networkObject.GetComponent<SocketClient>();
             socketClient.neededSender = sender;
 
-            Cryptography crypt = new Cryptography();
+            var crypt = new Cryptography();
 
             Tuple<string, string> keypair = crypt.CreateKeyPair();
             string key = keypair.Item1;
@@ -105,8 +99,6 @@ public abstract class Checks : MonoBehaviour
 
         previousTime = DateTime.Now.Second;
         gameTime = 1;
-
-        //Debug.Log(CreateMd5("Test"));
 
         #region CheckDebugger setter
 #if UNITY_EDITOR
@@ -165,7 +157,7 @@ public abstract class Checks : MonoBehaviour
                 ((IntPtr)Marshal.PtrToStructure(hDebugObject, typeof(IntPtr))).ToString()), true);
         }
 
-        if (SpeedPenalty > 20)
+        if (SpeedPenalty > 20f)
         {
             WriteToFileAndDebug(string.Format("[Anticheat] Speedup detected! MD5: {0}", CreateMd5(SpeedPenalty.ToString())), true);
         }
@@ -294,9 +286,6 @@ public abstract class Checks : MonoBehaviour
         {
             SmoothAim(delta);
         }
-
-        //Debug.Log(smoothVerbose.getVerbose());
-        //Debug.Log(delta);
     }
 
 
