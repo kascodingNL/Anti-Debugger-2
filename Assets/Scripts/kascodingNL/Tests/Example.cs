@@ -20,6 +20,6 @@ class Example : Checks
 
     public override void SmoothAim(Vector2 delta)
     {
-        //throw new NotImplementedException();
+
     }
 }

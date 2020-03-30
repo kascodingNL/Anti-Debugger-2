@@ -24,17 +24,14 @@ class TestDetection : Checks
 
     public override void ClockDesync(int TimeDiff)
     {
-        //Debug.Log(TimeDiff);
     }
 
     public override void InterUpdate(int TimeDiff)
     {
-        //Debug.Log("InterUpdate " + TimeDiff);
     }
 
     public override void DebuggerFound(DateTime timeStamp, int methodId)
     {
-        //Debug.Log(string.Format("TimeStamp: {0}, methodId: {1}", timeStamp, methodId));
     }
 
     public override void SmoothAim(Vector2 delta)
