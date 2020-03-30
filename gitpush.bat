@@ -1,3 +1,4 @@
 git add .
-git commit -m "Automated push!"
+set /p message=Enter a message
+git commit -m %message%
 git push origin master
