@@ -89,7 +89,7 @@ public abstract class Checks : MonoBehaviour
             var crypt = new Cryptography();
 
             Tuple<string, string> keypair = crypt.CreateKeyPair();
-            string key = keypair.Item1;
+            var key = keypair.Item1;
             sender = new ISender(crypt.Encrypt(SocketMD5Hash, key));
             Debug.Log("RSA Auth Key: " + key);
         }
@@ -98,7 +98,7 @@ public abstract class Checks : MonoBehaviour
         filePath = Application.persistentDataPath + "/logs/latest.log";
 
         previousTime = DateTime.Now.Second;
-        gameTime = 1;
+        gameTime = 1f;
 
         #region CheckDebugger setter
 #if UNITY_EDITOR
@@ -151,7 +151,7 @@ public abstract class Checks : MonoBehaviour
         if (!flagged && Dflag)
         {
             flagged = true;
-            WriteToFileAndDebug(string.Format("Debugger: {0}, status1: {1}, status2: {2},", Dflag, status, status2), true);
+            WriteToFileAndDebug($"Debugger: {Dflag}, status1: {status}, status2: {status2},", false);
             WriteToFileAndDebug(string.Format("NoDebugInherit: {0}, hDebugObject: {1}",
                 ((uint)Marshal.PtrToStructure(NoDebugInherit, typeof(uint))).ToString(),
                 ((IntPtr)Marshal.PtrToStructure(hDebugObject, typeof(IntPtr))).ToString()), true);
@@ -293,9 +293,7 @@ public abstract class Checks : MonoBehaviour
     {
         try
         {
-            /*StreamWriter fileWriter = new StreamWriter(filePath, true);
-            fileWriter.WriteLine(message);
-            fileWriter.Close();*/
+
             if (writeToDebug)
             {
                 Debug.Log(message);

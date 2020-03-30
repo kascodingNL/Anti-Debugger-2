@@ -32,19 +32,13 @@ public class SocketClient : MonoBehaviour
         };
 
         ws.Connect();
-        string externalip = new WebClient().DownloadString("http://icanhazip.com");
-        //Debug.Log(externalip);
-
+        var externalip = new WebClient().DownloadString("http://icanhazip.com");
+        
         var sending = "Sending handshake from " + externalip;
 
         ws.Send(ObjectToByteArray(sending));
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     #region Send methods
     public void SendData(String type, int sending)
     {
