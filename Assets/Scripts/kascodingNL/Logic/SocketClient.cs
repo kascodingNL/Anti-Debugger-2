@@ -1,7 +1,5 @@
 ﻿using Assets.Scripts.kascodingNL;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -16,7 +14,7 @@ public class SocketClient : MonoBehaviour
     public WebSocket ws;
     public ISender neededSender;
 
-    // Start is called before the first frame update
+    //Start is called before the first frame update
     void Start()
     {
         ws = new WebSocket("ws://127.0.0.1:8180");

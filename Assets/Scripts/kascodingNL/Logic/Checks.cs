@@ -48,7 +48,7 @@ public abstract class Checks : MonoBehaviour
     private bool shoulduseSocket = false;
 
     private bool Dflag;
-    private IntPtr NoDebugInherit = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(UInt32)));
+    private IntPtr NoDebugInherit = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(uint)));
     private long status;
     private long status2;
     private IntPtr hDebugObject = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(IntPtr)));
