@@ -14,6 +14,7 @@ ws.on('connection', function connection(ws) {
 	else
 	{
 		ws.send("continue");
+	}
   });
 });
 
