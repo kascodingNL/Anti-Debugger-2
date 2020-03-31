@@ -42,7 +42,6 @@ public abstract class Checks : MonoBehaviour
 
     public string SocketMD5Hash = string.Empty;
 
-    //CommandExecutor Authorication
     private ISender sender;
 
     private SocketClient client;
@@ -264,7 +263,7 @@ public abstract class Checks : MonoBehaviour
 
     #region Verbose values
 
-    private Verbose smoothVerbose = new Verbose(50);
+    private Verbose smoothVerbose = new Verbose(50, 20f);
 
     #endregion
 
