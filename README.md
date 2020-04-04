@@ -1,4 +1,4 @@
-# Anti-Debugger-2
+# CheatEye .NET
 
 Feature request?
 
@@ -12,3 +12,4 @@ Upcoming features:
 
 License:
 If I discover that you use this project, without STRICTLY following the MIT license, I WILL take it down!
+Exclusions can be made upon request and review
