@@ -1,6 +1,9 @@
 ﻿using Assets.Scripts.kascodingNL;
+using Assets.Scripts.kascodingNL.Abstractions;
+using Assets.Scripts.kascodingNL.Logic;
 using Assets.Scripts.kascodingNL.Logic.Utils;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -37,6 +40,8 @@ public abstract class Checks : MonoBehaviour
     #endregion
 
     #region Variables
+
+    private List<CheckBase> checkModules = new List<CheckBase>();
 
     public GameObject networkObject;
 
@@ -77,9 +82,19 @@ public abstract class Checks : MonoBehaviour
 
     #region Unity built in methods
 
+    void Awake()
+    {
+        foreach (CheckBase check in checkModules)
+        {
+            check.Awake();
+        }
+    }
+
     void Start()
     {
         #region Set variables
+        checkModules.Add(new ProcessSnapshotter());
+
         if (socketClient != null && shoulduseSocket)
         {
             socketClient = networkObject.GetComponent<SocketClient>();
@@ -111,6 +126,10 @@ public abstract class Checks : MonoBehaviour
 
         #endregion
 
+        foreach (CheckBase check in checkModules)
+        {
+            check.Start();
+        }
     }
 
     void FixedUpdate()
@@ -141,10 +160,20 @@ public abstract class Checks : MonoBehaviour
             InterUpdate(timeDiff);
         }
         gameTime += Time.deltaTime;
+
+        foreach(CheckBase check in checkModules)
+        {
+            check.CheckCheat();
+        }
     }
 
     void Update()
     {
+        foreach (CheckBase check in checkModules)
+        {
+            check.Update();
+        }
+
         UpdateMouse(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"));
 
         if (!flagged && Dflag)
