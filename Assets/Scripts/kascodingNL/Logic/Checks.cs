@@ -88,7 +88,6 @@ public abstract class Checks : MonoBehaviour
 
     void Start()
     {
-
         #region Set variables
 
         if (socketClient != null && shoulduseSocket)
