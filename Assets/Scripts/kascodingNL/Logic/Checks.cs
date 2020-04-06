@@ -1,5 +1,4 @@
 ﻿using Assets.Scripts.kascodingNL;
-using Assets.Scripts.kascodingNL.Abstractions;
 using Assets.Scripts.kascodingNL.Logic;
 using Assets.Scripts.kascodingNL.Logic.Utils;
 using System;
@@ -41,8 +40,6 @@ public abstract class Checks : MonoBehaviour
 
     #region Variables
 
-    private List<CheckBase> checkModules = new List<CheckBase>();
-
     public GameObject networkObject;
 
     public string SocketMD5Hash = string.Empty;
@@ -80,20 +77,19 @@ public abstract class Checks : MonoBehaviour
 
     #endregion
 
+    public GameObject snapshottingObject;
+
     #region Unity built in methods
 
     void Awake()
     {
-        foreach (CheckBase check in checkModules)
-        {
-            check.Awake();
-        }
+
     }
 
     void Start()
     {
+
         #region Set variables
-        checkModules.Add(new ProcessSnapshotter());
 
         if (socketClient != null && shoulduseSocket)
         {
@@ -125,15 +121,13 @@ public abstract class Checks : MonoBehaviour
         #endregion
 
         #endregion
-
-        foreach (CheckBase check in checkModules)
-        {
-            check.Start();
-        }
     }
+
+    public float CheckBaseDelay { get; private set; }
 
     void FixedUpdate()
     {
+        CheckBaseDelay += Time.deltaTime;
         SecondDelay += Time.fixedDeltaTime;
 
         if (previousTime != DateTime.Now.Second)
@@ -160,20 +154,10 @@ public abstract class Checks : MonoBehaviour
             InterUpdate(timeDiff);
         }
         gameTime += Time.deltaTime;
-
-        foreach(CheckBase check in checkModules)
-        {
-            check.CheckCheat();
-        }
     }
 
     void Update()
     {
-        foreach (CheckBase check in checkModules)
-        {
-            check.Update();
-        }
-
         UpdateMouse(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"));
 
         if (!flagged && Dflag)
@@ -216,6 +200,11 @@ public abstract class Checks : MonoBehaviour
     #endregion
 
     #region In-house function
+    public void MovementSnapshot(Quaternion quaternion)
+    {
+        
+    }
+
     void RequestDebugCheck()
     {
         #region Debugger detections
@@ -351,5 +340,9 @@ public abstract class Checks : MonoBehaviour
     public abstract void InterUpdate(int TimeDiff);
     public abstract void DebuggerFound(DateTime timeStamp, int methodId);
     public abstract void SmoothAim(Vector2 delta);
+    public virtual void MovementSnapshotterUpdate(Quaternion quat)
+    {
+
+    }
     #endregion
 }

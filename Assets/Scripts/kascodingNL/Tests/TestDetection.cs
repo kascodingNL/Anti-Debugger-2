@@ -36,6 +36,11 @@ class TestDetection : Checks
 
     public override void SmoothAim(Vector2 delta)
     {
-        Debug.Log("SmoothAim detected with " + delta);
+        //Debug.Log("SmoothAim detected with " + delta);
+    }
+
+    public override void MovementSnapshotterUpdate(Quaternion quat)
+    {
+        Debug.Log(quat);
     }
 }
