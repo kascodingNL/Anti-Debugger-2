@@ -80,7 +80,6 @@ public abstract class Checks : MonoBehaviour
     public GameObject snapshottingObject;
 
     #region Unity built in methods
-
     void Awake()
     {
 
