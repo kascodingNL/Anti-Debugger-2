@@ -41,6 +41,6 @@ class TestDetection : Checks
 
     public override void MovementSnapshotterUpdate(Quaternion quat)
     {
-        Debug.Log(quat);
+
     }
 }

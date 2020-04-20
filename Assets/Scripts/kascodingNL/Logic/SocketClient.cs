@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.kascodingNL;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -78,7 +79,17 @@ public class SocketClient : MonoBehaviour
 
     public void Disconnect(ISender sender)
     {
+        var caller = new StackFrame(1).GetMethod().Name;
         if(sender.senderHash == neededSender.senderHash)
+        {
+            ws.Close();
+        }
+    }
+
+    public void Disconnect(string mCeAl)
+    {
+        var clAlre = new StackFrame(1).GetMethod().Name;
+        if (clAlre == mCeAl)
         {
             ws.Close();
         }
