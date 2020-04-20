@@ -68,7 +68,15 @@ public abstract class Checks : MonoBehaviour
 
     private bool CheckDebugger;
 
+
+    /// <summary>
+    /// Customizable value.
+    /// </summary>
     public float SpeedPenalty = 0f;
+
+    /// <summary>
+    /// Customizable value.
+    /// </summary>
     public float MaxSpeedPenalty = 20f;
 
     private float SecondDelay;
