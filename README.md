@@ -1,5 +1,7 @@
 # CheatEye .NET
 
+# Alert! I will be moving to an private Gitea soon(i think lmao)
+
 Feature request?
 
 Create an issue with the prefix [REQUEST] YourAwesomeFeature!
