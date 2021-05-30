@@ -2,11 +2,20 @@ var CONFIG = require('./config.json');
 
 const WebSocket = require('ws');
 var crypto = require('crypto');
+var pbkdf2 = require('pbkdf2')
 
 const ws = new WebSocket.Server({ port: CONFIG.port });
 var connectedArray = [];
 
-console.log('Started on port 8180!');
+console.log("Starting server with SecureHash " + CONFIG.SecureKey + " and " + CONFIG.SecureRounds + " rounds");
+
+var key = CONFIG.SecureKey;
+var Salt = crypto.randomBytes(CONFIG.SaltLenght);
+var Rounds = CONFIG.SecureRounds;
+var derivedKey = pbkdf2.pbkdf2Sync(key, Salt, Rounds, 32, 'sha512')
+
+
+console.log('Started on port 8180! Hashed securekey is ' + derivedKey);
 
 ws.on('connection', function connection(ws) {
 	ws.on('message', function incoming(message) {

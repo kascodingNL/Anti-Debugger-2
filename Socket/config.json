@@ -1,5 +1,7 @@
 {
     "debug": false,
     "port": 8180,
-    "SecureHash": "K31K919fLCsX$&!($_+1LFK#415!D&LV_SalW"
+    "SecureKey": "CHANGEME",
+    "SaltLenght": 16,
+    "SecureRounds": 500000
 }
