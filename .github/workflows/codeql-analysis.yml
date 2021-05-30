@@ -21,9 +21,6 @@ on:
     - cron: '27 3 * * 5'
 
 jobs:
-  build-unity:
-    - name: Unity - Builder
-      uses: game-ci/unity-builder@v2.0-alpha-10
   analyze:
     name: Analyze
     runs-on: ubuntu-latest
@@ -72,3 +69,6 @@ jobs:
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
+
+    - name: Unity - Builder
+      uses: game-ci/unity-builder@v2.0-alpha-10
