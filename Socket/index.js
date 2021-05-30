@@ -17,7 +17,6 @@ ws.on('connection', function connection(ws) {
 		var secureID = crypto.randomBytes(256 / 9).toString('hex')
 		connectedArray.push(secureID);
 		ws.send("HandShake with id " + splitted[4] + " allowed SecID: " + secureID);
-	}
 
 	if(splitted[1] == "handshake" && splitted[0] == "disconnect")
 	{
@@ -43,7 +42,7 @@ ws.on('connection', function connection(ws) {
 	{
 		ws.send("continue");
 	}
-  });
+  };
 });
 
 ws.on('close', function disconnect(reasonCode, description)
