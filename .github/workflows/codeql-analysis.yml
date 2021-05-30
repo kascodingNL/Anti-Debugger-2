@@ -23,7 +23,7 @@ on:
 jobs:
   build-unity:
     - name: Unity - Builder
-    uses: game-ci/unity-builder@v2.0-alpha-10
+      uses: game-ci/unity-builder@v2.0-alpha-10
   analyze:
     name: Analyze
     runs-on: ubuntu-latest
