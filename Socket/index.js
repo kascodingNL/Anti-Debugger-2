@@ -1,7 +1,9 @@
+var CONFIG = require('./config.json');
+
 const WebSocket = require('ws');
 var crypto = require('crypto');
 
-const ws = new WebSocket.Server({ port: 8180 });
+const ws = new WebSocket.Server({ port: CONFIG.port });
 var connectedArray = [];
 
 console.log('Started on port 8180!');
@@ -10,7 +12,11 @@ ws.on('connection', function connection(ws) {
 	ws.on('message', function incoming(message) {
 
 		const filtered = message.toString().replace(/[^\x20-\x7E]/g, '');
-		console.log('received: %s', filtered);
+		
+		if(CONFIG.debug)
+		{
+			console.log('received: %s', filtered);
+		}
 		var splitted = filtered.split(' ');
 	
 		if (splitted[0] == "handshake" && splitted[1] == "sending" && splitted[2] == "with" && splitted[3] == "id") {
