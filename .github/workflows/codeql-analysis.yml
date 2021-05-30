@@ -69,6 +69,3 @@ jobs:
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
-
-    - name: Unity - Builder
-      uses: game-ci/unity-builder@v2.0-alpha-10
