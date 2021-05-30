@@ -21,6 +21,9 @@ on:
     - cron: '27 3 * * 5'
 
 jobs:
+  build-unity:
+    - name: Unity - Builder
+    uses: game-ci/unity-builder@v2.0-alpha-10
   analyze:
     name: Analyze
     runs-on: ubuntu-latest
