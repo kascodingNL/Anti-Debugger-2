@@ -1,3 +1,5 @@
+Current Version: 1.1.0
+
 # CheatEye .NET
 
 # Alert! I will be moving to an private Gitea soon(i think lmao)
